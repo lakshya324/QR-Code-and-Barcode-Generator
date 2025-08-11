@@ -7,23 +7,35 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 public class QRBarcodeGenerator {
+
+    // Hyperparameters for QR code
+    public static String qrData = "https://example.com";
+    public static String qrOutputPath = "output/qrcode.png";
+    public static int qrWidth = 300;
+    public static int qrHeight = 300;
+    public static String qrImageFormat = "PNG";
+
+    // Hyperparameters for Barcode
+    public static String barcodeData = "1234567890";
+    public static String barcodeOutputPath = "output/barcode.png";
+    public static int barcodeWidth = 300;
+    public static int barcodeHeight = 100;
+    public static String barcodeImageFormat = "PNG";
+    public static BarcodeFormat barcodeFormat = BarcodeFormat.CODE_128;
+
     public static void main(String[] args) {
         try {
             // Generate QR Code
-            String qrData = "https://example.com";
-            String qrPath = "output/qrcode.png";
-            BitMatrix qrMatrix = new MultiFormatWriter().encode(qrData, BarcodeFormat.QR_CODE, 300, 300);
-            Path qrOutputPath = FileSystems.getDefault().getPath(qrPath);
-            MatrixToImageWriter.writeToPath(qrMatrix, "PNG", qrOutputPath);
-            System.out.println("QR Code generated at " + qrPath);
+            BitMatrix qrMatrix = new MultiFormatWriter().encode(qrData, BarcodeFormat.QR_CODE, qrWidth, qrHeight);
+            Path qrPath = FileSystems.getDefault().getPath(qrOutputPath);
+            MatrixToImageWriter.writeToPath(qrMatrix, qrImageFormat, qrPath);
+            System.out.println("QR Code generated at " + qrOutputPath);
 
-            // Generate Barcode (Code 128)
-            String barcodeData = "1234567890";
-            String barcodePath = "output/barcode.png";
-            BitMatrix barcodeMatrix = new MultiFormatWriter().encode(barcodeData, BarcodeFormat.CODE_128, 300, 100);
-            Path barcodeOutputPath = FileSystems.getDefault().getPath(barcodePath);
-            MatrixToImageWriter.writeToPath(barcodeMatrix, "PNG", barcodeOutputPath);
-            System.out.println("Barcode generated at " + barcodePath);
+            // Generate Barcode
+            BitMatrix barcodeMatrix = new MultiFormatWriter().encode(barcodeData, barcodeFormat, barcodeWidth, barcodeHeight);
+            Path barcodePath = FileSystems.getDefault().getPath(barcodeOutputPath);
+            MatrixToImageWriter.writeToPath(barcodeMatrix, barcodeImageFormat, barcodePath);
+            System.out.println("Barcode generated at " + barcodeOutputPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
